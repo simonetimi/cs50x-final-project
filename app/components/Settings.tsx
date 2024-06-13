@@ -7,14 +7,17 @@ import {
   RadioGroup,
 } from '@nextui-org/react';
 
-import { GameSettings } from '@/app/page';
+import getQuestions from '@/app/actions/getQuestions';
+import { GameQuestions, GameSettings } from '@/app/page';
 
 const Settings = ({
   gameSettings,
   setGameSettings,
+  setGameQuestions,
 }: {
   gameSettings: GameSettings;
   setGameSettings: Dispatch<SetStateAction<GameSettings>>;
+  setGameQuestions: Dispatch<SetStateAction<GameQuestions | null>>;
 }) => {
   const categories = [
     { name: 'Music', code: 'music' },
@@ -35,8 +38,13 @@ const Settings = ({
     setGameSettings({ ...gameSettings, category: value });
   };
 
-  const onStartGame = () => {
+  const onStartGame = async () => {
     setGameSettings({ ...gameSettings, isInProgress: true });
+    const questions = await getQuestions(
+      gameSettings.difficulty,
+      gameSettings.category,
+    );
+    setGameQuestions(questions);
   };
 
   return (

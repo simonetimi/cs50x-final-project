@@ -6,6 +6,12 @@ import { Button, Input } from '@nextui-org/react';
 import Game from '@/app/components/Game';
 import Settings from '@/app/components/Settings';
 
+export interface PlayerState {
+  name: string;
+  isNameConfirmed: boolean;
+  score: number;
+}
+
 export interface GameSettings {
   isInProgress: boolean;
   difficulty: string;
@@ -14,8 +20,14 @@ export interface GameSettings {
   currentQuestion: number;
 }
 
+export interface GameQuestions {
+  question: string;
+  correctAnswer: string;
+  incorrectAnswers: string[];
+}
+
 export default function Home() {
-  const [playerState, setPlayerState] = useState({
+  const [playerState, setPlayerState] = useState<PlayerState>({
     name: '',
     isNameConfirmed: false,
     score: 0,
@@ -28,6 +40,10 @@ export default function Home() {
     currentScore: 0,
     currentQuestion: 0,
   });
+
+  const [gameQuestions, setGameQuestions] = useState<GameQuestions | null>(
+    null,
+  );
 
   // save to local storage on change
   useEffect(() => {
@@ -43,12 +59,6 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem('playerState', JSON.stringify(playerState));
   }, [playerState]);
-
-  // server component to call quiz api
-  // set it to a state
-
-  // save to local storage on click
-  // keep the highest score with difficulty
 
   const onClickNameConfirm = () => {
     setPlayerState({ ...playerState, isNameConfirmed: true });
@@ -95,11 +105,18 @@ export default function Home() {
         )}
         {playerState.isNameConfirmed &&
           (gameSettings.isInProgress ? (
-            <Game />
+            <Game
+              playerState={playerState}
+              setPlayerState={setPlayerState}
+              gameSettings={gameSettings}
+              setGameSettings={setGameSettings}
+              gameQuestions={gameQuestions}
+            />
           ) : (
             <Settings
               gameSettings={gameSettings}
               setGameSettings={setGameSettings}
+              setGameQuestions={setGameQuestions}
             />
           ))}
       </main>
