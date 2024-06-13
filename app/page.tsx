@@ -1,26 +1,61 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Input } from '@nextui-org/react';
 
+import Game from '@/app/components/Game';
+import Settings from '@/app/components/Settings';
+
+export interface GameSettings {
+  isInProgress: boolean;
+  difficulty: string;
+  category: string[] | undefined;
+  currentScore: number;
+  currentQuestion: number;
+}
+
 export default function Home() {
-  const [confirmed, setConfirmed] = useState(false);
-  const [name, setName] = useState('');
-  const [score, setScore] = useState(0);
+  const [playerState, setPlayerState] = useState({
+    name: '',
+    isNameConfirmed: false,
+    score: 0,
+  });
+
+  const [gameSettings, setGameSettings] = useState<GameSettings>({
+    isInProgress: false,
+    difficulty: 'easy',
+    category: undefined,
+    currentScore: 0,
+    currentQuestion: 0,
+  });
+
+  // save to local storage on change
+  useEffect(() => {
+    const savedState = localStorage.getItem('playerState');
+    if (savedState) {
+      const parsedState = JSON.parse(savedState);
+      if (parsedState.isNameConfirmed) {
+        setPlayerState(parsedState);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('playerState', JSON.stringify(playerState));
+  }, [playerState]);
+
   // server component to call quiz api
   // set it to a state
 
-  // set states to handle: username, correct answers, incorrect, best scores, difficulty setting, current question/total
   // save to local storage on click
   // keep the highest score with difficulty
 
-  const onClickConfirm = () => {
-    setConfirmed(true);
-    // optionally, add the ability to save in local storage
+  const onClickNameConfirm = () => {
+    setPlayerState({ ...playerState, isNameConfirmed: true });
   };
 
   const onChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
+    setPlayerState({ ...playerState, name: event.target.value });
   };
 
   return (
@@ -33,32 +68,40 @@ export default function Home() {
           </h2>
         </div>
         <div className="ml-auto flex flex-col items-end justify-center">
-          {confirmed && (
+          {playerState.isNameConfirmed && (
             <>
-              <p className="text-md">Hi, {name}!</p>
-              <p>Your best score is: {score}</p>
+              <p className="text-md">Hi, {playerState.name}!</p>
+              <p>Your best score is: {playerState.score}</p>
             </>
           )}
         </div>
       </header>
       <main className="flex h-[calc(100vh-16vw)] flex-col items-center justify-center">
-        {!confirmed && (
+        {!playerState.isNameConfirmed && (
           <div className="flex flex-col items-center gap-2">
             <p className="text-lg">Who are you?</p>
             <div className="flex gap-2">
               <Input
                 name="name"
-                value={name}
+                value={playerState.name}
                 onChange={onChangeName}
                 placeholder="Your name"
               ></Input>
-              <Button onClick={onClickConfirm}>Ok</Button>
+              <Button onClick={onClickNameConfirm} color="primary">
+                Ok
+              </Button>
             </div>
           </div>
         )}
-        {
-          // put game component here
-        }
+        {playerState.isNameConfirmed &&
+          (gameSettings.isInProgress ? (
+            <Game />
+          ) : (
+            <Settings
+              gameSettings={gameSettings}
+              setGameSettings={setGameSettings}
+            />
+          ))}
       </main>
     </>
   );
