@@ -20,11 +20,13 @@ const getQuestions = async (
         question: { text: string };
         correctAnswer: string;
         incorrectAnswers: string[];
+        allAnswers: string[];
       }) => {
         return {
           question: item.question.text,
           correctAnswer: item.correctAnswer,
           incorrectAnswers: item.incorrectAnswers,
+          allAnswers: [...item.incorrectAnswers, item.correctAnswer],
         };
       },
     );

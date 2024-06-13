@@ -24,6 +24,7 @@ export interface GameQuestions {
   question: string;
   correctAnswer: string;
   incorrectAnswers: string[];
+  allAnswers: string[];
 }
 
 export default function Home() {
@@ -36,12 +37,21 @@ export default function Home() {
   const [gameSettings, setGameSettings] = useState<GameSettings>({
     isInProgress: false,
     difficulty: 'easy',
-    category: undefined,
+    category: [
+      'film_and_tv',
+      'sport_and_leisure',
+      'music',
+      'society_and_culture',
+      'general_knowledge',
+      'food_and_drink',
+      'history',
+      'science',
+    ],
     currentScore: 0,
-    currentQuestion: 0,
+    currentQuestion: 1,
   });
 
-  const [gameQuestions, setGameQuestions] = useState<GameQuestions | null>(
+  const [gameQuestions, setGameQuestions] = useState<GameQuestions[] | null>(
     null,
   );
 
@@ -70,18 +80,23 @@ export default function Home() {
 
   return (
     <>
-      <header className="grid h-[10vw] grid-cols-3 p-8">
+      <header className="grid h-[10vw] grid-cols-3 p-2 lg:p-8">
         <div className="col-start-2 col-end-2 flex flex-col items-center justify-center">
-          <h1 className="text-3xl">Trivia Quiz App</h1>
-          <h2 className="text-lg">
+          <h1 className="text-2xl lg:text-3xl">Trivia Quiz App</h1>
+          <h2 className="collapse text-lg lg:visible">
             I definitely need to find a better name, right?
           </h2>
         </div>
-        <div className="ml-auto flex flex-col items-end justify-center">
+        <div className="ml-auto flex max-h-[10vh] flex-col items-end justify-center pr-4">
           {playerState.isNameConfirmed && (
             <>
               <p className="text-md">Hi, {playerState.name}!</p>
-              <p>Your best score is: {playerState.score}</p>
+              <p className="text-md hidden lg:visible lg:flex">
+                Your best score is: {playerState.score}
+              </p>
+              <p className="visibile text-md lg:hidden">
+                Best score: {playerState.score}
+              </p>
             </>
           )}
         </div>
