@@ -49,8 +49,8 @@ const Settings = ({
   };
 
   return (
-    <main className="flex h-3/4 w-11/12 flex-col items-center p-10 lg:h-4/5 lg:w-2/3">
-      <h1 className="text-xl">We&apos;re getting ready!</h1>
+    <main className="flex h-3/4 w-11/12 flex-col items-center p-10 text-2xl lg:h-4/5 lg:w-2/3">
+      <h1 className="text-3xl">We&apos;re getting ready!</h1>
       <div className="flex flex-col gap-3">
         <RadioGroup
           label="Select a difficulty"
@@ -58,9 +58,18 @@ const Settings = ({
           onChange={onSetDifficulty}
           className="mt-8"
         >
-          <Radio value="easy">Easy</Radio>
-          <Radio value="medium">Medium</Radio>
-          <Radio value="hard">Hard</Radio>
+          <Radio value="easy" classNames={{ label: 'text-xl text-slate-700' }}>
+            Easy
+          </Radio>
+          <Radio
+            value="medium"
+            classNames={{ label: 'text-xl text-slate-700' }}
+          >
+            Medium
+          </Radio>
+          <Radio value="hard" classNames={{ label: 'text-xl text-slate-700' }}>
+            Hard
+          </Radio>
         </RadioGroup>
       </div>
       <div className="mt-8 flex w-2/3 flex-col items-center justify-center gap-3">
@@ -70,16 +79,26 @@ const Settings = ({
           color="primary"
           value={gameSettings.category}
           onChange={onSetCategories}
+          classNames={{ label: 'text-xl' }}
         >
           {categories.map((item) => {
             return (
-              <Checkbox key={item.code} value={item.code} className="px-3">
+              <Checkbox
+                key={item.code}
+                value={item.code}
+                className="px-3"
+                classNames={{ label: 'text-xl text-slate-700' }}
+              >
                 {item.name}
               </Checkbox>
             );
           })}
         </CheckboxGroup>
-        <Button className="mt-4" color="default" onClick={onStartGame}>
+        <Button
+          className="mt-4 h-[50px] w-[150px] text-2xl"
+          color="primary"
+          onClick={onStartGame}
+        >
           Start!
         </Button>
       </div>

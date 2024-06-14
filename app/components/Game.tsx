@@ -6,13 +6,11 @@ import { Button } from '@nextui-org/react';
 import { GameQuestions, GameSettings, PlayerState } from '@/app/page';
 
 const Game = ({
-  playerState,
   setPlayerState,
   gameSettings,
   setGameSettings,
   gameQuestions,
 }: {
-  playerState: PlayerState;
   setPlayerState: Dispatch<SetStateAction<PlayerState>>;
   gameSettings: GameSettings;
   setGameSettings: Dispatch<SetStateAction<GameSettings>>;
@@ -47,6 +45,9 @@ const Game = ({
         ...prevSettings,
         currentScore: prevSettings.currentScore + 1,
       }));
+      playCorrect();
+    } else {
+      playWrong();
     }
 
     setTimeout(() => {
@@ -64,26 +65,26 @@ const Game = ({
   };
 
   return (
-    <main className="flex h-3/4 w-11/12 flex-col items-center p-10 lg:h-4/5 lg:w-2/3">
+    <main className="flex h-3/4 w-11/12 flex-col items-center p-10 text-xl lg:h-4/5 lg:w-2/3">
       {!isGameOver ? (
         <>
           <h3>{gameSettings.currentQuestion}/10</h3>
-          <h2 className="p-3 text-xl">
+          <h2 className="font-mouse p-3 text-2xl">
             {gameQuestions[gameSettings.currentQuestion - 1].question}
           </h2>
           <div className="mt-6 flex flex-col gap-6">
             {gameQuestions[gameSettings.currentQuestion - 1].allAnswers.map(
               (item) => (
                 <Button
-                  className={`py-4 ${
+                  className={`min-h-[60px] min-w-[200px] bg-white text-xl text-slate-700 shadow-lg lg:min-w-[600px] ${
                     hasClicked
                       ? item === correctAnswer
-                        ? 'bg-green-500'
+                        ? 'bg-green-500 text-white'
                         : item === selectedAnswer
-                          ? 'bg-red-500'
+                          ? 'bg-red-500 text-white'
                           : ''
                       : ''
-                  }`}
+                  } flex h-auto w-full items-center justify-center whitespace-normal break-words p-2 text-center`}
                   key={item}
                   value={item}
                   onClick={() => handleAnswerClick(item)}
@@ -96,10 +97,16 @@ const Game = ({
           </div>
         </>
       ) : (
-        <div className="flex flex-col gap-10">
-          <h1>Your score was {gameSettings.currentScore}/10</h1>
-          <Button color="primary" onClick={refreshPage}>
-            Restart?
+        <div className="flex flex-col items-center justify-center gap-10">
+          <h1 className="text-2xl">
+            Your score was {gameSettings.currentScore}/10
+          </h1>
+          <Button
+            color="primary"
+            onClick={refreshPage}
+            className="min-h-[60px] min-w-[200px] text-xl"
+          >
+            Play again!
           </Button>
         </div>
       )}
@@ -111,4 +118,14 @@ export default Game;
 
 function refreshPage() {
   window.location.reload();
+}
+
+function playCorrect() {
+  const correctSound = new Audio('/static/correct.mp3');
+  correctSound.play();
+}
+
+function playWrong() {
+  const wrongSound = new Audio('/static/wrong.mp3');
+  wrongSound.play();
 }

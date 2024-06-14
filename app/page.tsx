@@ -70,7 +70,8 @@ export default function Home() {
     localStorage.setItem('playerState', JSON.stringify(playerState));
   }, [playerState]);
 
-  const onClickNameConfirm = () => {
+  const onClickNameConfirm = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setPlayerState({ ...playerState, isNameConfirmed: true });
   };
 
@@ -80,21 +81,21 @@ export default function Home() {
 
   return (
     <>
-      <header className="grid h-[10vw] grid-cols-3 p-2 lg:p-8">
+      <header className="grid h-[10vw] grid-cols-3 p-2 pt-4 lg:mt-0 lg:border-b-1 lg:border-b-neutral-300 lg:p-8">
         <div className="col-start-2 col-end-2 flex flex-col items-center justify-center">
-          <h1 className="text-2xl lg:text-3xl">Trivia Quiz App</h1>
-          <h2 className="collapse text-lg lg:visible">
+          <h1 className="text-3xl lg:text-3xl">Trivia Quiz App</h1>
+          <h2 className="text-md hidden lg:block">
             I definitely need to find a better name, right?
           </h2>
         </div>
         <div className="ml-auto flex max-h-[10vh] flex-col items-end justify-center pr-4">
           {playerState.isNameConfirmed && (
             <>
-              <p className="text-md">Hi, {playerState.name}!</p>
-              <p className="text-md hidden lg:visible lg:flex">
+              <p className="text-xl">Hi, {playerState.name}!</p>
+              <p className="hidden text-xl lg:block">
                 Your best score is: {playerState.score}
               </p>
-              <p className="visibile text-md lg:hidden">
+              <p className="text-xl lg:hidden">
                 Best score: {playerState.score}
               </p>
             </>
@@ -104,24 +105,28 @@ export default function Home() {
       <main className="flex h-[calc(100vh-16vw)] flex-col items-center justify-center">
         {!playerState.isNameConfirmed && (
           <div className="flex flex-col items-center gap-2">
-            <p className="text-lg">Who are you?</p>
-            <div className="flex gap-2">
+            <p className="text-2xl">Who are you?</p>
+            <form
+              className="mt-4 flex items-center justify-center gap-4"
+              onSubmit={onClickNameConfirm}
+            >
               <Input
                 name="name"
                 value={playerState.name}
                 onChange={onChangeName}
                 placeholder="Your name"
+                className="w-[200px]"
+                classNames={{ input: 'text-xl' }}
               ></Input>
-              <Button onClick={onClickNameConfirm} color="primary">
+              <Button color="primary" className="text-xl">
                 Ok
               </Button>
-            </div>
+            </form>
           </div>
         )}
         {playerState.isNameConfirmed &&
           (gameSettings.isInProgress ? (
             <Game
-              playerState={playerState}
               setPlayerState={setPlayerState}
               gameSettings={gameSettings}
               setGameSettings={setGameSettings}
