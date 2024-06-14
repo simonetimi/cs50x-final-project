@@ -69,7 +69,7 @@ const Game = ({
       {!isGameOver ? (
         <>
           <h3>{gameSettings.currentQuestion}/10</h3>
-          <h2 className="font-mouse p-3 text-2xl">
+          <h2 className="p-3 font-mouse text-2xl">
             {gameQuestions[gameSettings.currentQuestion - 1].question}
           </h2>
           <div className="mt-6 flex flex-col gap-6">
@@ -80,9 +80,7 @@ const Game = ({
                     hasClicked
                       ? item === correctAnswer
                         ? 'bg-green-500 text-white'
-                        : item === selectedAnswer
-                          ? 'bg-red-500 text-white'
-                          : ''
+                        : item === selectedAnswer && 'bg-red-500 text-white'
                       : ''
                   } flex h-auto w-full items-center justify-center whitespace-normal break-words p-2 text-center`}
                   key={item}
