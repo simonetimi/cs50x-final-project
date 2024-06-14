@@ -36,7 +36,6 @@ const Settings = ({
 
   const onSetCategories = (value: string[]) => {
     setGameSettings({ ...gameSettings, category: value });
-    console.log(value);
   };
 
   const onStartGame = async () => {

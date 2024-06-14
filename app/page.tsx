@@ -70,6 +70,11 @@ export default function Home() {
     localStorage.setItem('playerState', JSON.stringify(playerState));
   }, [playerState]);
 
+  const onClearUserData = () => {
+    localStorage.clear();
+    window.location.reload();
+  };
+
   const onClickNameConfirm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setPlayerState({ ...playerState, isNameConfirmed: true });
@@ -78,10 +83,30 @@ export default function Home() {
   const onChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPlayerState({ ...playerState, name: event.target.value });
   };
-
   return (
     <>
       <header className="grid h-[10vw] grid-cols-3 p-2 pt-4 lg:mt-0 lg:border-b-1 lg:border-b-neutral-300 lg:p-8">
+        {playerState.isNameConfirmed && (
+          <div className="col-start-1 col-end-1 flex items-center justify-start gap-1">
+            <p>Clear user data</p>
+            <button onClick={onClearUserData}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                className="size-6 text-red-500"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+            </button>
+          </div>
+        )}
         <div className="col-start-2 col-end-2 flex flex-col items-center justify-center">
           <h1 className="text-3xl lg:text-3xl">Trivia Quiz App</h1>
           <h2 className="text-md hidden lg:block">
