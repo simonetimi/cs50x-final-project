@@ -143,7 +143,7 @@ export default function Home() {
                 className="w-[200px]"
                 classNames={{ input: 'text-xl' }}
               ></Input>
-              <Button color="primary" className="text-xl">
+              <Button type="submit" color="primary" className="text-xl">
                 Ok
               </Button>
             </form>
