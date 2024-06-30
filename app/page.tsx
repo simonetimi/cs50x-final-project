@@ -142,6 +142,7 @@ export default function Home() {
                 placeholder="Your name"
                 className="w-[200px]"
                 classNames={{ input: 'text-xl' }}
+                minLength={2}
               ></Input>
               <Button type="submit" color="primary" className="text-xl">
                 Ok
