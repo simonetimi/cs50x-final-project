@@ -12,7 +12,7 @@ If the user selects the correct answer, the button will turn green and it will p
 
 ##### How does it work under the hood?
 
-I used TypeScript has the main language, along with some HTML & CSS. Specifically, I used Next.js as a framework, paired with Tailwind CSS.
+I used TypeScript as the main language, along with some HTML & CSS. Specifically, I used Next.js as a framework, paired with Tailwind CSS.
 For a cleaner code, I used Eslint and Prettier, which are widely used in the industry. Eslint is essential in optimizing code, like avoiding declaring used imports or variable. Prettier formats the code so it’s consistent in the whole applications.
 Specifically, I configured Eslint to take care of a correct typing with TypeScript, along with a11y components for better accessibility. I also set it to order imports in every TypeScript file in order to make them consistent.  Prettier, on the other hand, has been set to keep the print view under 80 characters, an indentation size of 2 and the use of single quotes, against for consistency reasons.
 
